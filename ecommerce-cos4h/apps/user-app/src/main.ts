@@ -10,7 +10,7 @@ async function bootstrap() {
         brokers: ['localhost:9092'],
       },
       consumer: {
-        groupId: 'gateway-consumer-users',
+        groupId: 'CONSUMER-USER',
       },
     },
   });

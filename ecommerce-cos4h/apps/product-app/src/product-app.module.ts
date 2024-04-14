@@ -2,27 +2,25 @@ import { Module } from '@nestjs/common';
 import { ProductAppController } from './product-app.controller';
 import { ProductAppService } from './product-app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ProductEntity } from './product.entity';
-import { DataSource } from 'typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import dataSourceConfig from './config/data-source';
+import { ProductEntity } from './entity/ProductEntity';
+import { CategoryEntity } from './entity/CategoryEntity';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'root',
-      database: 'product_mcsv',
-      entities: [ProductEntity],
-      synchronize: true,
-      logging: ['error'],
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [dataSourceConfig],
     }),
-    TypeOrmModule.forFeature([ProductEntity]),
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) =>
+        configService.get('data-source'),
+    }),
+    TypeOrmModule.forFeature([ProductEntity, CategoryEntity]),
   ],
   controllers: [ProductAppController],
   providers: [ProductAppService],
 })
-export class ProductAppModule {
-  constructor(private readonly dataSource: DataSource) {}
-}
+export class ProductAppModule {}
