@@ -53,12 +53,13 @@ let FileAppController = class FileAppController {
         this.fileAppService = fileAppService;
     }
     async uploadImageProduct(file) {
-        return this.fileAppService.uploadImage(file, 'products');
+        const image = await this.fileAppService.uploadImage(file, "products");
+        return image.secure_url;
     }
 };
 exports.FileAppController = FileAppController;
 __decorate([
-    (0, microservices_1.MessagePattern)('MS-FILE-PRODUCT-POST'),
+    (0, microservices_1.MessagePattern)("MS-FILE-PRODUCT-POST"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
@@ -90,12 +91,25 @@ const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 const file_app_controller_1 = __webpack_require__(/*! ./file-app.controller */ "./apps/file-app/src/file-app.controller.ts");
 const file_app_service_1 = __webpack_require__(/*! ./file-app.service */ "./apps/file-app/src/file-app.service.ts");
 const cloudinary_config_1 = __webpack_require__(/*! ./config/cloudinary.config */ "./apps/file-app/src/config/cloudinary.config.ts");
+const microservices_1 = __webpack_require__(/*! @nestjs/microservices */ "@nestjs/microservices");
 let FileAppModule = class FileAppModule {
 };
 exports.FileAppModule = FileAppModule;
 exports.FileAppModule = FileAppModule = __decorate([
     (0, common_1.Module)({
-        imports: [],
+        imports: [
+            microservices_1.ClientsModule.register([
+                {
+                    name: "MS-PRODUCTS",
+                    transport: microservices_1.Transport.KAFKA,
+                    options: {
+                        client: {
+                            brokers: ["localhost:902"],
+                        },
+                    },
+                },
+            ]),
+        ],
         controllers: [file_app_controller_1.FileAppController],
         providers: [file_app_service_1.FileAppService, cloudinary_config_1.cloudinaryConfig],
     })
@@ -121,11 +135,13 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.FileAppService = void 0;
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 const cloudinary_1 = __webpack_require__(/*! cloudinary */ "cloudinary");
+const crypto_1 = __webpack_require__(/*! crypto */ "crypto");
 let FileAppService = class FileAppService {
     async uploadImage(file, folder) {
         const bufer = Buffer.from(file.buffer.data);
+        file.filename = (0, crypto_1.randomUUID)().toString();
         return new Promise((resolve, reject) => {
-            const upload = cloudinary_1.v2.uploader.upload_stream({ resource_type: 'image', folder }, (error, result) => {
+            const upload = cloudinary_1.v2.uploader.upload_stream({ resource_type: "image", folder }, (error, result) => {
                 if (error) {
                     reject(error);
                 }
@@ -136,6 +152,9 @@ let FileAppService = class FileAppService {
             upload.write(bufer);
             upload.end();
         });
+    }
+    async deleteFile(url) {
+        return await cloudinary_1.v2.api.delete_resources([url]);
     }
 };
 exports.FileAppService = FileAppService;
@@ -194,6 +213,16 @@ module.exports = require("cloudinary");
 
 module.exports = require("dotenv");
 
+/***/ }),
+
+/***/ "crypto":
+/*!*************************!*\
+  !*** external "crypto" ***!
+  \*************************/
+/***/ ((module) => {
+
+module.exports = require("crypto");
+
 /***/ })
 
 /******/ 	});
@@ -240,10 +269,10 @@ async function bootstrap() {
         transport: microservices_1.Transport.KAFKA,
         options: {
             client: {
-                brokers: ['localhost:9092'],
+                brokers: ["localhost:9092"],
             },
             consumer: {
-                groupId: 'CONSUMER-FILE',
+                groupId: "CONSUMER-FILE",
             },
         },
     });

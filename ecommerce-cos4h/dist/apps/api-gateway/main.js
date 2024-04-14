@@ -182,11 +182,11 @@ let FileService = class FileService {
         this.clientFiles = clientFiles;
     }
     async create(file) {
-        const response = await (0, rxjs_1.firstValueFrom)(this.clientFiles.send('MS-FILE-PRODUCT-POST', file));
+        const response = await (0, rxjs_1.firstValueFrom)(this.clientFiles.send("MS-FILE-PRODUCT-POST", file));
         return response;
     }
     async onModuleInit() {
-        this.clientFiles.subscribeToResponseOf('MS-FILE-PRODUCT-POST');
+        this.clientFiles.subscribeToResponseOf("MS-FILE-PRODUCT-POST");
         await this.clientFiles.connect();
     }
     update() { }
@@ -194,7 +194,7 @@ let FileService = class FileService {
 exports.FileService = FileService;
 exports.FileService = FileService = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, common_1.Inject)('MS-FILES')),
+    __param(0, (0, common_1.Inject)("MS-FILES")),
     __metadata("design:paramtypes", [typeof (_a = typeof microservices_1.ClientKafka !== "undefined" && microservices_1.ClientKafka) === "function" ? _a : Object])
 ], FileService);
 
@@ -302,29 +302,29 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], OrderController.prototype, "findAll", null);
 __decorate([
-    (0, common_1.Get)(':id'),
-    __param(0, (0, common_1.Param)('id', new common_1.ValidationPipe())),
+    (0, common_1.Get)(":id"),
+    __param(0, (0, common_1.Param)("id", new common_1.ValidationPipe())),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], OrderController.prototype, "findOne", null);
 __decorate([
-    (0, common_1.Put)(':id'),
-    __param(0, (0, common_1.Param)('id', new common_1.ValidationPipe())),
+    (0, common_1.Put)(":id"),
+    __param(0, (0, common_1.Param)("id", new common_1.ValidationPipe())),
     __param(1, (0, common_1.Body)(new common_1.ValidationPipe())),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, typeof (_c = typeof Partial !== "undefined" && Partial) === "function" ? _c : Object]),
     __metadata("design:returntype", void 0)
 ], OrderController.prototype, "update", null);
 __decorate([
-    (0, common_1.Delete)(':id'),
-    __param(0, (0, common_1.Param)('id', new common_1.ValidationPipe())),
+    (0, common_1.Delete)(":id"),
+    __param(0, (0, common_1.Param)("id", new common_1.ValidationPipe())),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], OrderController.prototype, "remove", null);
 exports.OrderController = OrderController = __decorate([
-    (0, common_1.Controller)('orders'),
+    (0, common_1.Controller)("orders"),
     __metadata("design:paramtypes", [typeof (_a = typeof order_service_1.OrderService !== "undefined" && order_service_1.OrderService) === "function" ? _a : Object])
 ], OrderController);
 
@@ -358,14 +358,14 @@ exports.OrderModule = OrderModule = __decorate([
         imports: [
             microservices_1.ClientsModule.register([
                 {
-                    name: 'MS-ORDERS',
+                    name: "MS-ORDERS",
                     transport: microservices_1.Transport.KAFKA,
                     options: {
                         client: {
-                            brokers: ['localhost:9092'],
+                            brokers: ["localhost:9092"],
                         },
                         consumer: {
-                            groupId: 'consumer-orders',
+                            groupId: "consumer-orders",
                         },
                     },
                 },
@@ -409,18 +409,18 @@ let OrderService = class OrderService {
         this.clientOrders = clientOrders;
     }
     async create(createOrderDto) {
-        const response = await (0, rxjs_1.firstValueFrom)(this.clientOrders.send('MS-ORDER-POST', createOrderDto));
+        const response = await (0, rxjs_1.firstValueFrom)(this.clientOrders.send("MS-ORDER-POST", createOrderDto));
         return response;
     }
     findAll() {
-        return this.clientOrders.send('MS-ORDERS-GET', {});
+        return this.clientOrders.send("MS-ORDERS-GET", {});
     }
     findOne(id) {
-        const response = this.clientOrders.send('MS-ORDER-GET', id);
+        const response = this.clientOrders.send("MS-ORDER-GET", id);
         return response;
     }
     update(id, updateOrderDto) {
-        const response = this.clientOrders.send('MS-ORDER-PUT', {
+        const response = this.clientOrders.send("MS-ORDER-PUT", {
             id,
             order: updateOrderDto,
         });
@@ -430,17 +430,17 @@ let OrderService = class OrderService {
         return `This action removes a #${id} order`;
     }
     async onModuleInit() {
-        this.clientOrders.subscribeToResponseOf('MS-ORDERS-GET');
-        this.clientOrders.subscribeToResponseOf('MS-ORDER-POST');
-        this.clientOrders.subscribeToResponseOf('MS-ORDER-GET');
-        this.clientOrders.subscribeToResponseOf('MS-ORDER-PUT');
+        this.clientOrders.subscribeToResponseOf("MS-ORDERS-GET");
+        this.clientOrders.subscribeToResponseOf("MS-ORDER-POST");
+        this.clientOrders.subscribeToResponseOf("MS-ORDER-GET");
+        this.clientOrders.subscribeToResponseOf("MS-ORDER-PUT");
         await this.clientOrders.connect();
     }
 };
 exports.OrderService = OrderService;
 exports.OrderService = OrderService = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, common_1.Inject)('MS-ORDERS')),
+    __param(0, (0, common_1.Inject)("MS-ORDERS")),
     __metadata("design:paramtypes", [typeof (_a = typeof microservices_1.ClientKafka !== "undefined" && microservices_1.ClientKafka) === "function" ? _a : Object])
 ], OrderService);
 
@@ -766,7 +766,7 @@ let ValidationPipe = class ValidationPipe {
             console.log(error);
         });
         if (errors.length > 0) {
-            throw new common_1.BadRequestException('Validation failed');
+            throw new common_1.BadRequestException("Validation failed");
         }
         return value;
     }
@@ -925,7 +925,7 @@ const morgan = __webpack_require__(/*! morgan */ "morgan");
 const cors = __webpack_require__(/*! cors */ "cors");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(api_gateway_module_1.ApiGatewayModule);
-    app.use(morgan('dev'));
+    app.use(morgan("dev"));
     app.use(cors());
     await app.listen(7777);
 }

@@ -1,13 +1,13 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import { Request } from 'express';
-import { Observable } from 'rxjs';
+import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
+import { Request } from "express";
+import { Observable } from "rxjs";
 
 function validateRequest(request: Request) {
-  const token = request.headers['authorization'];
+  const token = request.headers["authorization"];
   if (!token) {
     return false;
   }
-  if (token === '1234') {
+  if (token === "1234") {
     return true;
   }
 }

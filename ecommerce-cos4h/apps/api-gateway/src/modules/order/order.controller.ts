@@ -1,21 +1,18 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
-  ValidationPipe,
+  Get,
   NotFoundException,
+  Param,
+  Post,
   Put,
-  ParseUUIDPipe,
-} from '@nestjs/common';
-import { OrderService } from './order.service';
-import { CreateOrderDto } from './dto/create-order.dto';
-import { UUID } from 'crypto';
+  ValidationPipe,
+} from "@nestjs/common";
+import { OrderService } from "./order.service";
+import { CreateOrderDto } from "./dto/create-order.dto";
 
-@Controller('orders')
+@Controller("orders")
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
@@ -33,21 +30,21 @@ export class OrderController {
     return this.orderService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id', new ValidationPipe()) id: string) {
+  @Get(":id")
+  findOne(@Param("id", new ValidationPipe()) id: string) {
     return this.orderService.findOne(id);
   }
 
-  @Put(':id')
+  @Put(":id")
   update(
-    @Param('id', new ValidationPipe()) id: string,
+    @Param("id", new ValidationPipe()) id: string,
     @Body(new ValidationPipe()) updateOrderDto: Partial<CreateOrderDto>,
   ) {
     return this.orderService.update(id, updateOrderDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id', new ValidationPipe()) id: string) {
+  @Delete(":id")
+  remove(@Param("id", new ValidationPipe()) id: string) {
     return this.orderService.remove(id);
   }
 }

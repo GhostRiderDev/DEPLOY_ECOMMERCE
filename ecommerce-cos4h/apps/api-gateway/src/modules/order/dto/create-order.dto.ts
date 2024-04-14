@@ -1,5 +1,5 @@
-import { ArrayNotEmpty, IsUUID } from 'class-validator';
-import { UUID } from 'crypto';
+import { ArrayNotEmpty, IsUUID } from "class-validator";
+import { UUID } from "crypto";
 
 export class CreateOrderDto {
   @IsUUID()
