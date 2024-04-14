@@ -16,7 +16,7 @@ import {
 import { UsersService } from './users.service';
 import { Observable } from 'rxjs';
 import { CreateUserDto } from './dto/create-user.dto';
-import { ValidationPipe } from '../pipe/validation.pipe';
+import { ValidationPipe } from '../../pipe/validation.pipe';
 
 @Controller('users')
 export class UsersController {
