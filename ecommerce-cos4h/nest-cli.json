@@ -54,6 +54,24 @@
       "compilerOptions": {
         "tsConfigPath": "apps/auth-app/tsconfig.app.json"
       }
+    },
+    "order-app": {
+      "type": "application",
+      "root": "apps/order-app",
+      "entryFile": "main",
+      "sourceRoot": "apps/order-app/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/order-app/tsconfig.app.json"
+      }
+    },
+    "file-app": {
+      "type": "application",
+      "root": "apps/file-app",
+      "entryFile": "main",
+      "sourceRoot": "apps/file-app/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/file-app/tsconfig.app.json"
+      }
     }
   }
 }

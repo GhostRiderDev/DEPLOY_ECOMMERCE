@@ -10,11 +10,10 @@ async function bootstrap() {
         brokers: ['localhost:9092'],
       },
       consumer: {
-        groupId: 'gateway-consumer-products',
+        groupId: 'CONSUMER-PRODUCT',
       },
     },
   });
-
   app.listen();
 }
 

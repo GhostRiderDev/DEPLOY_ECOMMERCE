@@ -10,20 +10,25 @@ import {
   ParseUUIDPipe,
   Put,
   Delete,
+  NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { Observable } from 'rxjs';
 import { CreateUserDto } from './dto/create-user.dto';
-import { ValidationUserPipe } from './pipe/validation.pipe';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { ValidationPipe } from '../pipe/validation.pipe';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  create(@Body(new ValidationUserPipe()) createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  async create(@Body(new ValidationPipe()) createUserDto: CreateUserDto) {
+    const response = await this.usersService.create(createUserDto);
+    if (response.status !== 201) {
+      throw new BadRequestException(response.data);
+    }
+    return response;
   }
 
   @Get()
@@ -48,7 +53,7 @@ export class UsersController {
   @Put(':id')
   update(
     @Param('id', new ParseUUIDPipe()) id: string,
-    @Body(new ValidationUserPipe()) updateUserDto: UpdateUserDto,
+    @Body(new ValidationPipe()) updateUserDto: Partial<CreateUserDto>,
   ) {
     return this.usersService.update(id, updateUserDto);
   }

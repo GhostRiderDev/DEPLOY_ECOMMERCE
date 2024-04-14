@@ -1,6 +1,6 @@
 import { Controller } from '@nestjs/common';
 import { ProductAppService } from './product-app.service';
-import { MessagePattern } from '@nestjs/microservices';
+import { EventPattern, MessagePattern } from '@nestjs/microservices';
 import { UUID } from 'crypto';
 
 @Controller()
@@ -14,9 +14,9 @@ export class ProductAppController {
   }
 
   @MessagePattern('MS-PRODUCT-GET')
-  async getProduct({ id }: { id: UUID }): Promise<any> {
+  async getProduct(id: UUID): Promise<any> {
     const product = await this.productAppService.findOne(id);
-    return product;
+    return JSON.stringify(product);
   }
 
   @MessagePattern('MS-PRODUCTS-CREATE')
@@ -32,5 +32,10 @@ export class ProductAppController {
   @MessagePattern('MS-PRODUCTS-DELETE')
   deleteProduct(id: string): Promise<void> {
     return this.productAppService.delete(id);
+  }
+
+  @EventPattern('MS-PRODUCT-STOCK-REDUCED')
+  reduceStock(id: string): void {
+    this.productAppService.reduceStock(id);
   }
 }

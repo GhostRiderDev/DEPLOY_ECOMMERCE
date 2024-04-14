@@ -4,6 +4,8 @@ import {
   Length,
   IsNotEmpty,
   IsPhoneNumber,
+  IsEmpty,
+  IsStrongPassword,
 } from 'class-validator';
 
 export class CreateUserDto {
@@ -13,7 +15,7 @@ export class CreateUserDto {
   email: string;
 
   @IsString()
-  @Length(8, 30)
+  @Length(3, 80)
   @IsNotEmpty()
   name: string;
 
@@ -27,15 +29,21 @@ export class CreateUserDto {
   phone: string;
 
   @IsString()
-  @Length(2, 30)
+  @Length(5, 20)
   country?: string;
 
   @IsString()
-  @Length(2, 30)
+  @Length(5, 20)
   city?: string;
 
   @IsNotEmpty()
   @IsString()
-  @Length(8, 30)
+  @Length(8, 15)
+  @IsStrongPassword({
+    minLowercase: 1,
+    minUppercase: 1,
+    minNumbers: 1,
+    minSymbols: 1,
+  })
   password: string;
 }

@@ -1,9 +1,13 @@
-import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  NotFoundException,
+  OnModuleInit,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-// import { UpdateUserDto } from './dto/update-user.dto';
 import { ClientKafka } from '@nestjs/microservices';
-import { Observable } from 'rxjs';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { Observable, firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class UsersService implements OnModuleInit {
@@ -11,8 +15,11 @@ export class UsersService implements OnModuleInit {
     @Inject('API-GATEWAY-USERS')
     private readonly gatewayClientUsers: ClientKafka,
   ) {}
-  create(createUserDto: CreateUserDto) {
-    return this.gatewayClientUsers.emit('MS-USER-POST', createUserDto);
+  async create(createUserDto: CreateUserDto) {
+    const response = await firstValueFrom(
+      this.gatewayClientUsers.send('MS-USER-POST', createUserDto),
+    );
+    return response;
   }
 
   findAll(page: number, limit: number) {
@@ -27,7 +34,7 @@ export class UsersService implements OnModuleInit {
     return user;
   }
 
-  update(id: string, updateUserDto: UpdateUserDto) {
+  update(id: string, updateUserDto: Partial<CreateUserDto>) {
     return this.gatewayClientUsers.emit('MS-USER-PUT', { id, updateUserDto });
   }
 
@@ -38,6 +45,7 @@ export class UsersService implements OnModuleInit {
   async onModuleInit() {
     this.gatewayClientUsers.subscribeToResponseOf('MS-USERS-GET');
     this.gatewayClientUsers.subscribeToResponseOf('MS-USER-GET');
+    this.gatewayClientUsers.subscribeToResponseOf('MS-USER-POST');
     await this.gatewayClientUsers.connect();
   }
 }
