@@ -268,17 +268,9 @@ __decorate([
     __metadata("design:type", String)
 ], UserEntity.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ length: 100, unique: true, nullable: false }),
-    __metadata("design:type", String)
-], UserEntity.prototype, "email", void 0);
-__decorate([
     (0, typeorm_1.Column)({ length: 50, nullable: false }),
     __metadata("design:type", String)
 ], UserEntity.prototype, "name", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ length: 120, nullable: false }),
-    __metadata("design:type", String)
-], UserEntity.prototype, "password", void 0);
 __decorate([
     (0, typeorm_1.Column)({ length: 100, nullable: false }),
     __metadata("design:type", String)
@@ -295,6 +287,10 @@ __decorate([
     (0, typeorm_1.Column)({ length: 50, nullable: true }),
     __metadata("design:type", String)
 ], UserEntity.prototype, "city", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ length: 50, nullable: true, type: 'uuid' }),
+    __metadata("design:type", String)
+], UserEntity.prototype, "id_credentials", void 0);
 exports.UserEntity = UserEntity = __decorate([
     (0, typeorm_1.Entity)('User')
 ], UserEntity);
