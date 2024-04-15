@@ -1,6 +1,6 @@
 import { Controller } from "@nestjs/common";
 import { FileAppService } from "./file-app.service";
-import { MessagePattern } from "@nestjs/microservices";
+import { EventPattern, MessagePattern } from "@nestjs/microservices";
 
 @Controller()
 export class FileAppController {
@@ -12,5 +12,10 @@ export class FileAppController {
   ) {
     const image = await this.fileAppService.uploadImage(file, "products");
     return image.secure_url;
+  }
+
+  @EventPattern("MS-FILE-DELETE")
+  async deleteImageByUrl(url: string) {
+    this.fileAppService.deleteFile(url);
   }
 }

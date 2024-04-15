@@ -165,7 +165,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var _a, _b, _c, _d, _e, _f, _g;
+var _a, _b, _c, _d, _e, _f;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ProductAppController = void 0;
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
@@ -188,7 +188,8 @@ let ProductAppController = class ProductAppController {
         return this.productAppService.create(product);
     }
     updateProduct(data) {
-        return this.productAppService.update(data.id, data.product);
+        console.log("*************PASA POR AQUI***************", data);
+        this.productAppService.update(data.id, data.product);
     }
     deleteProduct(id) {
         return this.productAppService.delete(id);
@@ -199,37 +200,37 @@ let ProductAppController = class ProductAppController {
 };
 exports.ProductAppController = ProductAppController;
 __decorate([
-    (0, microservices_1.MessagePattern)('MS-PRODUCTS-GET'),
+    (0, microservices_1.MessagePattern)("MS-PRODUCTS-GET"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", typeof (_b = typeof Promise !== "undefined" && Promise) === "function" ? _b : Object)
 ], ProductAppController.prototype, "getProducts", null);
 __decorate([
-    (0, microservices_1.MessagePattern)('MS-PRODUCT-GET'),
+    (0, microservices_1.MessagePattern)("MS-PRODUCT-GET"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [typeof (_c = typeof crypto_1.UUID !== "undefined" && crypto_1.UUID) === "function" ? _c : Object]),
     __metadata("design:returntype", typeof (_d = typeof Promise !== "undefined" && Promise) === "function" ? _d : Object)
 ], ProductAppController.prototype, "getProduct", null);
 __decorate([
-    (0, microservices_1.MessagePattern)('MS-PRODUCTS-CREATE'),
+    (0, microservices_1.MessagePattern)("MS-PRODUCT-POST"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", typeof (_e = typeof Promise !== "undefined" && Promise) === "function" ? _e : Object)
 ], ProductAppController.prototype, "createProduct", null);
 __decorate([
-    (0, microservices_1.MessagePattern)('MS-PRODUCTS-UPDATE'),
+    (0, microservices_1.EventPattern)("MS-PRODUCT-PUT"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", typeof (_f = typeof Promise !== "undefined" && Promise) === "function" ? _f : Object)
+    __metadata("design:returntype", void 0)
 ], ProductAppController.prototype, "updateProduct", null);
 __decorate([
-    (0, microservices_1.MessagePattern)('MS-PRODUCTS-DELETE'),
+    (0, microservices_1.MessagePattern)("MS-PRODUCTS-DELETE"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", typeof (_g = typeof Promise !== "undefined" && Promise) === "function" ? _g : Object)
+    __metadata("design:returntype", typeof (_f = typeof Promise !== "undefined" && Promise) === "function" ? _f : Object)
 ], ProductAppController.prototype, "deleteProduct", null);
 __decorate([
-    (0, microservices_1.EventPattern)('MS-PRODUCT-STOCK-REDUCED'),
+    (0, microservices_1.EventPattern)("MS-PRODUCT-STOCK-REDUCED"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
@@ -343,7 +344,6 @@ let ProductAppService = class ProductAppService {
     }
     async update(id, product) {
         await this.productRepository.update(id, product);
-        return this.productRepository.findOneBy({ id });
     }
     async delete(id) {
         await this.productRepository.delete(id);
@@ -351,7 +351,7 @@ let ProductAppService = class ProductAppService {
     async reduceStock(id) {
         const productDB = await this.productRepository.findOneBy({ id });
         if (!productDB) {
-            throw new common_1.NotFoundException('Product not found');
+            throw new common_1.NotFoundException("Product not found");
         }
         productDB.stock -= 1;
         await this.productRepository.update(id, productDB);

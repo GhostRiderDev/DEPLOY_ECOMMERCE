@@ -27,6 +27,8 @@ export class FileAppService {
   }
 
   async deleteFile(url: string) {
-    return await v2.api.delete_resources([url]);
+    const publicId = url.split("/").pop().split(".")[0];
+
+    await v2.api.delete_resources([`products/${publicId}`]);
   }
 }

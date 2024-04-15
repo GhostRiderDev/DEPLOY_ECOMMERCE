@@ -3,20 +3,20 @@ import {
   Inject,
   Injectable,
   OnModuleInit,
-} from '@nestjs/common';
-import { UpdateOrderDetailDto } from './dto/update-order-detail.dto';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { ClientKafka, RpcException } from '@nestjs/microservices';
-import { firstValueFrom } from 'rxjs';
-import { ProductReceivedDto } from './dto/productReceived.dto';
-import { OrderDetail } from 'apps/order-app/src/schema/orderDetails.schema';
+} from "@nestjs/common";
+import { UpdateOrderDetailDto } from "./dto/update-order-detail.dto";
+import { InjectModel } from "@nestjs/mongoose";
+import { Model } from "mongoose";
+import { ClientKafka, RpcException } from "@nestjs/microservices";
+import { firstValueFrom } from "rxjs";
+import { ProductReceivedDto } from "./dto/productReceived.dto";
+import { OrderDetail } from "apps/order-app/src/schema/orderDetails.schema";
 
 @Injectable()
 export class OrderDetailService implements OnModuleInit {
   constructor(
-    @InjectModel('OrderDetail') private orderDetailModel: Model<OrderDetail>,
-    @Inject('MS-PRODUCTS')
+    @InjectModel("OrderDetail") private orderDetailModel: Model<OrderDetail>,
+    @Inject("MS-PRODUCTS")
     private clientOrders: ClientKafka,
   ) {}
   async create(ids_products: string[]) {
@@ -24,7 +24,7 @@ export class OrderDetailService implements OnModuleInit {
       const allProducts = await Promise.all(
         ids_products.map(async (id) => {
           const product = await firstValueFrom(
-            this.clientOrders.send('MS-PRODUCT-GET', id),
+            this.clientOrders.send("MS-PRODUCT-GET", id),
           );
           if (!product.name) {
             throw new BadRequestException(`Product with id ${id} not found`);
@@ -66,8 +66,20 @@ export class OrderDetailService implements OnModuleInit {
     }, 0);
   }
 
+  async updateUrlProductImage(idProduct: string, newImageUrl: string) {
+    try {
+      await this.orderDetailModel.updateMany(
+        { "products.id": idProduct },
+        { $set: { "products.$[prod].imageUrl": newImageUrl } },
+        { arrayFilters: [{ "prod.id": idProduct }] },
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   async onModuleInit() {
-    this.clientOrders.subscribeToResponseOf('MS-PRODUCT-GET');
+    this.clientOrders.subscribeToResponseOf("MS-PRODUCT-GET");
     await this.clientOrders.connect();
   }
 }

@@ -20,7 +20,7 @@ exports.ApiGatewayModule = void 0;
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 const users_module_1 = __webpack_require__(/*! ./modules/users/users.module */ "./apps/api-gateway/src/modules/users/users.module.ts");
 const order_module_1 = __webpack_require__(/*! ./modules/order/order.module */ "./apps/api-gateway/src/modules/order/order.module.ts");
-const file_module_1 = __webpack_require__(/*! ./modules/file/file/file.module */ "./apps/api-gateway/src/modules/file/file/file.module.ts");
+const file_module_1 = __webpack_require__(/*! ./modules/file/file.module */ "./apps/api-gateway/src/modules/file/file.module.ts");
 let ApiGatewayModule = class ApiGatewayModule {
 };
 exports.ApiGatewayModule = ApiGatewayModule;
@@ -35,10 +35,153 @@ exports.ApiGatewayModule = ApiGatewayModule = __decorate([
 
 /***/ }),
 
-/***/ "./apps/api-gateway/src/modules/file/file/file.controller.ts":
-/*!*******************************************************************!*\
-  !*** ./apps/api-gateway/src/modules/file/file/file.controller.ts ***!
-  \*******************************************************************/
+/***/ "./apps/api-gateway/src/modules/file/file.controller.ts":
+/*!**************************************************************!*\
+  !*** ./apps/api-gateway/src/modules/file/file.controller.ts ***!
+  \**************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+var _a, _b, _c, _d;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.FileController = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const file_service_1 = __webpack_require__(/*! ./file.service */ "./apps/api-gateway/src/modules/file/file.service.ts");
+const platform_express_1 = __webpack_require__(/*! @nestjs/platform-express */ "@nestjs/platform-express");
+const crypto_1 = __webpack_require__(/*! crypto */ "crypto");
+let FileController = class FileController {
+    constructor(fileService) {
+        this.fileService = fileService;
+    }
+    create(file, id) {
+        return this.fileService.create(id, file);
+    }
+    update() {
+        return this.fileService.update();
+    }
+};
+exports.FileController = FileController;
+__decorate([
+    (0, common_1.Post)("product/:id"),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)("image")),
+    __param(0, (0, common_1.UploadedFile)(new common_1.ParseFilePipe({
+        validators: [
+            new common_1.MaxFileSizeValidator({
+                maxSize: 200000,
+                message: "Image size must be lower than 200kb",
+            }),
+            new common_1.FileTypeValidator({
+                fileType: /(png|jpg|jpeg|webp)/,
+            }),
+        ],
+    }))),
+    __param(1, (0, common_1.Param)("id", new common_1.ParseUUIDPipe())),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [typeof (_c = typeof Express !== "undefined" && (_b = Express.Multer) !== void 0 && _b.File) === "function" ? _c : Object, typeof (_d = typeof crypto_1.UUID !== "undefined" && crypto_1.UUID) === "function" ? _d : Object]),
+    __metadata("design:returntype", void 0)
+], FileController.prototype, "create", null);
+__decorate([
+    (0, common_1.Patch)(":id"),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], FileController.prototype, "update", null);
+exports.FileController = FileController = __decorate([
+    (0, common_1.Controller)("file"),
+    __metadata("design:paramtypes", [typeof (_a = typeof file_service_1.FileService !== "undefined" && file_service_1.FileService) === "function" ? _a : Object])
+], FileController);
+
+
+/***/ }),
+
+/***/ "./apps/api-gateway/src/modules/file/file.module.ts":
+/*!**********************************************************!*\
+  !*** ./apps/api-gateway/src/modules/file/file.module.ts ***!
+  \**********************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.FileModule = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const file_service_1 = __webpack_require__(/*! ./file.service */ "./apps/api-gateway/src/modules/file/file.service.ts");
+const file_controller_1 = __webpack_require__(/*! ./file.controller */ "./apps/api-gateway/src/modules/file/file.controller.ts");
+const microservices_1 = __webpack_require__(/*! @nestjs/microservices */ "@nestjs/microservices");
+let FileModule = class FileModule {
+};
+exports.FileModule = FileModule;
+exports.FileModule = FileModule = __decorate([
+    (0, common_1.Module)({
+        controllers: [file_controller_1.FileController],
+        providers: [file_service_1.FileService],
+        imports: [
+            microservices_1.ClientsModule.register([
+                {
+                    name: "MS-FILES",
+                    transport: microservices_1.Transport.KAFKA,
+                    options: {
+                        client: {
+                            brokers: ["localhost:9092"],
+                        },
+                        consumer: {
+                            groupId: "CONSUMER-FILE",
+                        },
+                    },
+                },
+                {
+                    name: "MS-PRODUCTS",
+                    transport: microservices_1.Transport.KAFKA,
+                    options: {
+                        client: {
+                            brokers: ["localhost:9092"],
+                        },
+                        consumer: {
+                            groupId: "CONSUMER-PRODUCT",
+                        },
+                    },
+                },
+                {
+                    name: "MS-ORDERS",
+                    transport: microservices_1.Transport.KAFKA,
+                    options: {
+                        client: {
+                            brokers: ["localhost:9092"],
+                        },
+                        consumer: {
+                            groupId: "CONSUMER-ORDER",
+                        },
+                    },
+                },
+            ]),
+        ],
+    })
+], FileModule);
+
+
+/***/ }),
+
+/***/ "./apps/api-gateway/src/modules/file/file.service.ts":
+/*!***********************************************************!*\
+  !*** ./apps/api-gateway/src/modules/file/file.service.ts ***!
+  \***********************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -56,138 +199,41 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 var _a, _b, _c;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.FileController = void 0;
-const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
-const file_service_1 = __webpack_require__(/*! ./file.service */ "./apps/api-gateway/src/modules/file/file/file.service.ts");
-const platform_express_1 = __webpack_require__(/*! @nestjs/platform-express */ "@nestjs/platform-express");
-let FileController = class FileController {
-    constructor(fileService) {
-        this.fileService = fileService;
-    }
-    create(file) {
-        return this.fileService.create(file);
-    }
-    update() {
-        return this.fileService.update();
-    }
-};
-exports.FileController = FileController;
-__decorate([
-    (0, common_1.Post)('product'),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('image')),
-    __param(0, (0, common_1.UploadedFile)(new common_1.ParseFilePipe({
-        validators: [
-            new common_1.MaxFileSizeValidator({
-                maxSize: 200000,
-                message: 'Image size must be lower than 200kb',
-            }),
-            new common_1.FileTypeValidator({
-                fileType: /(png|jpg|jpeg|webp)/,
-            }),
-        ],
-    }))),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [typeof (_c = typeof Express !== "undefined" && (_b = Express.Multer) !== void 0 && _b.File) === "function" ? _c : Object]),
-    __metadata("design:returntype", void 0)
-], FileController.prototype, "create", null);
-__decorate([
-    (0, common_1.Patch)(':id'),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
-], FileController.prototype, "update", null);
-exports.FileController = FileController = __decorate([
-    (0, common_1.Controller)('file'),
-    __metadata("design:paramtypes", [typeof (_a = typeof file_service_1.FileService !== "undefined" && file_service_1.FileService) === "function" ? _a : Object])
-], FileController);
-
-
-/***/ }),
-
-/***/ "./apps/api-gateway/src/modules/file/file/file.module.ts":
-/*!***************************************************************!*\
-  !*** ./apps/api-gateway/src/modules/file/file/file.module.ts ***!
-  \***************************************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.FileModule = void 0;
-const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
-const file_service_1 = __webpack_require__(/*! ./file.service */ "./apps/api-gateway/src/modules/file/file/file.service.ts");
-const file_controller_1 = __webpack_require__(/*! ./file.controller */ "./apps/api-gateway/src/modules/file/file/file.controller.ts");
-const microservices_1 = __webpack_require__(/*! @nestjs/microservices */ "@nestjs/microservices");
-let FileModule = class FileModule {
-};
-exports.FileModule = FileModule;
-exports.FileModule = FileModule = __decorate([
-    (0, common_1.Module)({
-        controllers: [file_controller_1.FileController],
-        providers: [file_service_1.FileService],
-        imports: [
-            microservices_1.ClientsModule.register([
-                {
-                    name: 'MS-FILES',
-                    transport: microservices_1.Transport.KAFKA,
-                    options: {
-                        client: {
-                            brokers: ['localhost:9092'],
-                        },
-                        consumer: {
-                            groupId: 'CONSUMER-FILE',
-                        },
-                    },
-                },
-            ]),
-        ],
-    })
-], FileModule);
-
-
-/***/ }),
-
-/***/ "./apps/api-gateway/src/modules/file/file/file.service.ts":
-/*!****************************************************************!*\
-  !*** ./apps/api-gateway/src/modules/file/file/file.service.ts ***!
-  \****************************************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
-var _a;
-Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.FileService = void 0;
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 const microservices_1 = __webpack_require__(/*! @nestjs/microservices */ "@nestjs/microservices");
 const rxjs_1 = __webpack_require__(/*! rxjs */ "rxjs");
 let FileService = class FileService {
-    constructor(clientFiles) {
+    constructor(clientFiles, clientProducts, clientOrders) {
         this.clientFiles = clientFiles;
+        this.clientProducts = clientProducts;
+        this.clientOrders = clientOrders;
     }
-    async create(file) {
-        const response = await (0, rxjs_1.firstValueFrom)(this.clientFiles.send("MS-FILE-PRODUCT-POST", file));
-        return response;
+    async create(id, file) {
+        const product = await (0, rxjs_1.firstValueFrom)(this.clientProducts.send("MS-PRODUCT-GET", id));
+        if (!product) {
+            throw new common_1.NotFoundException(`Product with id ${id} not found`);
+        }
+        const urlHttps = await (0, rxjs_1.firstValueFrom)(this.clientFiles.send("MS-FILE-PRODUCT-POST", file));
+        this.clientFiles.emit("MS-FILE-DELETE", product.imageUrl);
+        product.imageUrl = urlHttps;
+        const dataToEmit = {
+            id,
+            product,
+        };
+        this.clientProducts.emit("MS-PRODUCT-PUT", dataToEmit);
+        this.clientOrders.emit("MS-ORDER-UPDATE-PRODUCT-IMAGE", {
+            id,
+            url: urlHttps,
+        });
+        return urlHttps;
     }
     async onModuleInit() {
         this.clientFiles.subscribeToResponseOf("MS-FILE-PRODUCT-POST");
+        this.clientProducts.subscribeToResponseOf("MS-PRODUCT-GET");
         await this.clientFiles.connect();
+        await this.clientProducts.connect();
+        await this.clientOrders.connect();
     }
     update() { }
 };
@@ -195,7 +241,9 @@ exports.FileService = FileService;
 exports.FileService = FileService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, common_1.Inject)("MS-FILES")),
-    __metadata("design:paramtypes", [typeof (_a = typeof microservices_1.ClientKafka !== "undefined" && microservices_1.ClientKafka) === "function" ? _a : Object])
+    __param(1, (0, common_1.Inject)("MS-PRODUCTS")),
+    __param(2, (0, common_1.Inject)("MS-ORDERS")),
+    __metadata("design:paramtypes", [typeof (_a = typeof microservices_1.ClientKafka !== "undefined" && microservices_1.ClientKafka) === "function" ? _a : Object, typeof (_b = typeof microservices_1.ClientKafka !== "undefined" && microservices_1.ClientKafka) === "function" ? _b : Object, typeof (_c = typeof microservices_1.ClientKafka !== "undefined" && microservices_1.ClientKafka) === "function" ? _c : Object])
 ], FileService);
 
 
@@ -369,6 +417,18 @@ exports.OrderModule = OrderModule = __decorate([
                         },
                     },
                 },
+                {
+                    name: "MS-USERS",
+                    transport: microservices_1.Transport.KAFKA,
+                    options: {
+                        client: {
+                            brokers: ["localhost:9092"],
+                        },
+                        consumer: {
+                            groupId: "CONSUMER-USER",
+                        },
+                    },
+                },
             ]),
         ],
         controllers: [order_controller_1.OrderController],
@@ -398,15 +458,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var _a;
+var _a, _b;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.OrderService = void 0;
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 const microservices_1 = __webpack_require__(/*! @nestjs/microservices */ "@nestjs/microservices");
 const rxjs_1 = __webpack_require__(/*! rxjs */ "rxjs");
 let OrderService = class OrderService {
-    constructor(clientOrders) {
+    constructor(clientOrders, clientUsers) {
         this.clientOrders = clientOrders;
+        this.clientUsers = clientUsers;
     }
     async create(createOrderDto) {
         const response = await (0, rxjs_1.firstValueFrom)(this.clientOrders.send("MS-ORDER-POST", createOrderDto));
@@ -434,14 +495,17 @@ let OrderService = class OrderService {
         this.clientOrders.subscribeToResponseOf("MS-ORDER-POST");
         this.clientOrders.subscribeToResponseOf("MS-ORDER-GET");
         this.clientOrders.subscribeToResponseOf("MS-ORDER-PUT");
+        this.clientUsers.subscribeToResponseOf("MS-USER-GET");
         await this.clientOrders.connect();
+        await this.clientUsers.connect();
     }
 };
 exports.OrderService = OrderService;
 exports.OrderService = OrderService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, common_1.Inject)("MS-ORDERS")),
-    __metadata("design:paramtypes", [typeof (_a = typeof microservices_1.ClientKafka !== "undefined" && microservices_1.ClientKafka) === "function" ? _a : Object])
+    __param(1, (0, common_1.Inject)("MS-USERS")),
+    __metadata("design:paramtypes", [typeof (_a = typeof microservices_1.ClientKafka !== "undefined" && microservices_1.ClientKafka) === "function" ? _a : Object, typeof (_b = typeof microservices_1.ClientKafka !== "undefined" && microservices_1.ClientKafka) === "function" ? _b : Object])
 ], OrderService);
 
 
