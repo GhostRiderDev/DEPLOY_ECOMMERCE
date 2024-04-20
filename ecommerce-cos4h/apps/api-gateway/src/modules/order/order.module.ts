@@ -2,31 +2,39 @@ import { Module } from "@nestjs/common";
 import { OrderService } from "./order.service";
 import { OrderController } from "./order.controller";
 import { ClientsModule, Transport } from "@nestjs/microservices";
+import { kafkaConfig } from "../../config/kafka.config";
+import { UsersModule } from "../users/users.module";
+import { UsersService } from "../users/users.service";
 
+// name: kafkaConfig().services.order.name
+// clientId: kafkaConfig().services.gateway.clientId
+// groupId: kafkaConfig().services.order.groupId
 @Module({
   imports: [
     ClientsModule.register([
       {
-        name: "MS-ORDERS",
+        name: "SERVICIO-USUARIO",
         transport: Transport.KAFKA,
         options: {
           client: {
-            brokers: ["localhost:9092"],
+            clientId: "CLIENTE-USUARIO",
+            brokers: [kafkaConfig().broker],
           },
           consumer: {
-            groupId: "consumer-orders",
+            groupId: "GRUPO-USUARIO",
           },
         },
       },
       {
-        name: "MS-USERS",
+        name: "SERVICIO-ORDEN",
         transport: Transport.KAFKA,
         options: {
           client: {
-            brokers: ["localhost:9092"],
+            clientId: "CLIENTE-ORDEN",
+            brokers: [kafkaConfig().broker],
           },
           consumer: {
-            groupId: "CONSUMER-USER",
+            groupId: "GRUPO-ORDEN",
           },
         },
       },
@@ -34,5 +42,6 @@ import { ClientsModule, Transport } from "@nestjs/microservices";
   ],
   controllers: [OrderController],
   providers: [OrderService],
+  exports: [OrderService],
 })
 export class OrderModule {}

@@ -2,6 +2,7 @@ import { Module } from "@nestjs/common";
 import { FileService } from "./file.service";
 import { FileController } from "./file.controller";
 import { ClientsModule, Transport } from "@nestjs/microservices";
+import { kafkaConfig } from "../../config/kafka.config";
 
 @Module({
   controllers: [FileController],
@@ -9,38 +10,41 @@ import { ClientsModule, Transport } from "@nestjs/microservices";
   imports: [
     ClientsModule.register([
       {
-        name: "MS-FILES",
+        name: kafkaConfig().services.file.name,
         transport: Transport.KAFKA,
         options: {
           client: {
-            brokers: ["localhost:9092"],
+            clientId: kafkaConfig().services.gateway.clientId,
+            brokers: [kafkaConfig().broker],
           },
           consumer: {
-            groupId: "CONSUMER-FILE",
+            groupId: kafkaConfig().services.file.groupId,
           },
         },
       },
       {
-        name: "MS-PRODUCTS",
+        name: kafkaConfig().services.product.name,
         transport: Transport.KAFKA,
         options: {
           client: {
-            brokers: ["localhost:9092"],
+            clientId: kafkaConfig().services.gateway.clientId,
+            brokers: [kafkaConfig().broker],
           },
           consumer: {
-            groupId: "CONSUMER-PRODUCT",
+            groupId: kafkaConfig().services.product.groupId,
           },
         },
       },
       {
-        name: "MS-ORDERS",
+        name: kafkaConfig().services.order.name,
         transport: Transport.KAFKA,
         options: {
           client: {
-            brokers: ["localhost:9092"],
+            clientId: kafkaConfig().services.gateway.clientId,
+            brokers: [kafkaConfig().broker],
           },
           consumer: {
-            groupId: "CONSUMER-ORDER",
+            groupId: kafkaConfig().services.order.groupId,
           },
         },
       },

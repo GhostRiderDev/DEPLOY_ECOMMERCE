@@ -1,3 +1,4 @@
+import { ApiBody, ApiProperty, PickType } from "@nestjs/swagger";
 import {
   IsString,
   IsEmail,
@@ -6,36 +7,74 @@ import {
   IsPhoneNumber,
   IsEmpty,
   IsStrongPassword,
-} from 'class-validator';
+  IsOptional,
+} from "class-validator";
 
 export class CreateUserDto {
+  /**
+   * @description this is user personal email
+   * @example 'maria@gmail.com'
+   * @since 1.0.0
+   */
   @IsEmail()
   @Length(8, 30)
   @IsNotEmpty()
   email: string;
 
+  /**
+   * @description this is username
+   * @example 'maria'
+   * @since 1.0.0
+   */
   @IsString()
   @Length(3, 80)
   @IsNotEmpty()
   name: string;
 
+  /**
+   * @description this address user
+   * @example 'CL 99B #98A-17'
+   * @since 1.0.0
+   */
   @IsString()
   @Length(4, 150)
   address: string;
 
+  /**
+   * @description this is user  phone
+   * @example 'maria@gmail.com'
+   * @since 1.0.0
+   */
   @IsPhoneNumber()
   @Length(6, 15)
   @IsNotEmpty()
   phone: string;
 
+  /**
+   * @description this is user  country
+   * @example 'United States'
+   * @since 1.0.0
+   */
   @IsString()
   @Length(5, 20)
+  @IsOptional()
   country?: string;
 
+  /**
+   * @description this is user  city
+   * @example 'Houston'
+   * @since 1.0.0
+   */
   @IsString()
   @Length(5, 20)
+  @IsOptional()
   city?: string;
 
+  /**
+   * @description 'this is user  password'
+   * @example '.@Mluk12345'
+   * @since 1.0.0
+   */
   @IsNotEmpty()
   @IsString()
   @Length(8, 15)
@@ -47,3 +86,8 @@ export class CreateUserDto {
   })
   password: string;
 }
+
+export class UserToSignin extends PickType(CreateUserDto, [
+  "email",
+  "password",
+]) {}

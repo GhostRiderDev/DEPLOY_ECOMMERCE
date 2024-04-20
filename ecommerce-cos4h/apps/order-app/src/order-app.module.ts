@@ -1,14 +1,15 @@
-import { Module } from '@nestjs/common';
-import { OrderAppService } from './order-app.service';
-import { OrderAppController } from './order-app.controller';
-import { MongooseModule } from '@nestjs/mongoose';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import dataSourceConfig from './config/data-source';
-import { Order, OrderSchema } from './schema/order.schema';
-import { OrderDetail, OrderDetailSchema } from './schema/orderDetails.schema';
-import { OrderDetailService } from './module/order-detail/order-detail/order-detail.service';
-import { OrderDetailModule } from './module/order-detail/order-detail/order-detail.module';
-import { ClientsModule, Transport } from '@nestjs/microservices';
+import { Module } from "@nestjs/common";
+import { OrderAppService } from "./order-app.service";
+import { OrderAppController } from "./order-app.controller";
+import { MongooseModule } from "@nestjs/mongoose";
+import { ConfigModule, ConfigService } from "@nestjs/config";
+import dataSourceConfig from "./config/data-source";
+import { Order, OrderSchema } from "./schema/order.schema";
+import { OrderDetail, OrderDetailSchema } from "./schema/orderDetails.schema";
+import { OrderDetailService } from "./module/order-detail/order-detail/order-detail.service";
+import { OrderDetailModule } from "./module/order-detail/order-detail/order-detail.module";
+import { ClientsModule, Transport } from "@nestjs/microservices";
+import { kafkaConfig } from "./config/kafka.config";
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     MongooseModule.forRootAsync({
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) =>
-        configService.get('data-source'),
+        configService.get("data-source"),
     }),
     MongooseModule.forFeature([
       { name: Order.name, schema: OrderSchema },
@@ -27,26 +28,28 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     ]),
     ClientsModule.register([
       {
-        name: 'MS-PRODUCTS',
+        name: kafkaConfig().services.product.name,
         transport: Transport.KAFKA,
         options: {
           client: {
-            clientId: 'productClient',
-            brokers: ['localhost:9092'],
+            clientId: kafkaConfig().services.order.clientId,
+            brokers: [kafkaConfig().broker],
           },
-          consumer: { groupId: 'CONSUMER-PRODUCT' },
+          consumer: {
+            groupId: kafkaConfig().services.product.groupId,
+          },
         },
       },
       {
-        name: 'MS-USERS',
+        name: kafkaConfig().services.user.name,
         transport: Transport.KAFKA,
         options: {
           client: {
-            clientId: 'orderClient',
-            brokers: ['localhost:9092'],
+            clientId: kafkaConfig().services.order.clientId,
+            brokers: [kafkaConfig().broker],
           },
           consumer: {
-            groupId: 'CONSUMER-USER',
+            groupId: kafkaConfig().services.user.groupId,
           },
         },
       },

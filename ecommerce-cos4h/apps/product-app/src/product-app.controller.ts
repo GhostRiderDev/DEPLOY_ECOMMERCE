@@ -26,7 +26,6 @@ export class ProductAppController {
 
   @EventPattern("MS-PRODUCT-PUT")
   updateProduct(data: { id: string; product }): void {
-    console.log("*************PASA POR AQUI***************", data);
     this.productAppService.update(data.id, data.product);
   }
 

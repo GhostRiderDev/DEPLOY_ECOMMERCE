@@ -15,8 +15,8 @@ export class OrderAppController {
   }
 
   @MessagePattern("MS-ORDERS-GET")
-  getOrders() {
-    return this.orderAppService.findOrders();
+  getOrders({ page, limit }: { page: number; limit: number }) {
+    return this.orderAppService.findOrders(page, limit);
   }
 
   @MessagePattern("MS-ORDER-GET")
@@ -30,7 +30,7 @@ export class OrderAppController {
     return this.orderAppService.updateOrder(id, order);
   }
 
-  @MessagePattern("MS-ORDERS-USER-GET")
+  @MessagePattern("ORDENES-USUARIO")
   getOrdersUser(id_user: string) {
     return this.orderAppService.findOrdersUser(id_user);
   }

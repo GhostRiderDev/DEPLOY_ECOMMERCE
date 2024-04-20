@@ -43,7 +43,17 @@
       "entryFile": "main",
       "sourceRoot": "apps/api-gateway/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
+        "tsConfigPath": "apps/api-gateway/tsconfig.app.json",
+        "plugins": [
+          {
+            "name": "@nestjs/swagger/plugin",
+            "options": {
+              "classValidatorShim": false,
+              "introspectComments": true,
+              "dtoFileNameSuffix": [".dto.ts", ".entity.ts"]
+            }
+          }
+        ]
       }
     },
     "auth-app": {

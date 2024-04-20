@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e088193e-1730-4169-b5ed-0fc502de2b4e" name="Changes" comment="Working into file-upload" />
+    <list default="true" id="e088193e-1730-4169-b5ed-0fc502de2b4e" name="Changes" comment="Working into file-upload">
+      <change beforePath="$PROJECT_DIR$/apps/api-gateway/src/modules/users/users.controller.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/api-gateway/src/modules/users/users.controller.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/api-gateway/src/modules/users/users.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/api-gateway/src/modules/users/users.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/api-gateway/src/modules/users/users.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/api-gateway/src/modules/users/users.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/user-app/src/user-app.controller.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/user-app/src/user-app.controller.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -16,9 +22,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 7
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="2f69bcGnNDQ6cvr9Cw7J9o8wjDo" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -30,7 +36,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "39513527",
+    "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "D:/cos4h/JS/Henry/M100/PM4-cos4h/ecommerce-cos4h",
     "node.js.detected.package.eslint": "true",
@@ -59,6 +65,7 @@
       <option name="presentableId" value="Default" />
       <updated>1713110734929</updated>
       <workItem from="1713110736558" duration="789000" />
+      <workItem from="1713185277865" duration="11000" />
     </task>
     <task id="LOCAL-00001" summary="Working into file-upload">
       <option name="closed" value="true" />

@@ -12,6 +12,8 @@ import { OrderDetailService } from "./module/order-detail/order-detail/order-det
 import { ClientKafka, RpcException } from "@nestjs/microservices";
 import { Console } from "console";
 import { UUID } from "crypto";
+import { kafkaConfig } from "./config/kafka.config";
+import { firstValueFrom } from "rxjs";
 
 @Injectable()
 export class OrderAppService implements OnModuleInit {
@@ -19,7 +21,7 @@ export class OrderAppService implements OnModuleInit {
     @InjectModel("Order")
     private readonly orderModel: Model<Order>,
     private readonly orderDetailService: OrderDetailService,
-    @Inject("MS-USERS")
+    @Inject(kafkaConfig().services.user.name)
     private readonly clientUsers: ClientKafka,
   ) {}
 
@@ -47,9 +49,11 @@ export class OrderAppService implements OnModuleInit {
     }
   }
 
-  async findOrders() {
+  async findOrders(page: number, limit: number) {
     const orders = await this.orderModel
       .find()
+      .skip((page - 1) * limit)
+      .limit(limit)
       .populate("order_detail_id")
       .exec();
     return orders;
@@ -88,8 +92,5 @@ export class OrderAppService implements OnModuleInit {
   updateImageUrlProduct(idProduct: string, newImgUrl: string) {
     this.orderDetailService.updateUrlProductImage(idProduct, newImgUrl);
   }
-  async onModuleInit() {
-    this.clientUsers.subscribeToResponseOf("MS-USER-GET");
-    await this.clientUsers.connect();
-  }
+  async onModuleInit() {}
 }

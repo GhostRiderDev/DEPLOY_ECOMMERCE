@@ -8,13 +8,17 @@ import { ClientKafka } from "@nestjs/microservices";
 import { UUID } from "crypto";
 import { firstValueFrom } from "rxjs";
 import { ProductDto } from "../product/dto/product.dto";
+import { kafkaConfig } from "../../config/kafka.config";
 
 @Injectable()
 export class FileService implements OnModuleInit {
   constructor(
-    @Inject("MS-FILES") private readonly clientFiles: ClientKafka,
-    @Inject("MS-PRODUCTS") private readonly clientProducts: ClientKafka,
-    @Inject("MS-ORDERS") private readonly clientOrders: ClientKafka,
+    @Inject(kafkaConfig().services.file.name)
+    private readonly clientFiles: ClientKafka,
+    @Inject(kafkaConfig().services.product.name)
+    private readonly clientProducts: ClientKafka,
+    @Inject(kafkaConfig().services.order.name)
+    private readonly clientOrders: ClientKafka,
   ) {}
   async create(id: UUID, file: Express.Multer.File) {
     const product: ProductDto = await firstValueFrom(

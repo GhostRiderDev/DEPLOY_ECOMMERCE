@@ -1,40 +1,27 @@
-import {
-  Inject,
-  Injectable,
-  NotFoundException,
-  OnModuleInit,
-} from "@nestjs/common";
+import { Inject, Injectable, OnModuleInit } from "@nestjs/common";
 import { CreateOrderDto } from "./dto/create-order.dto";
 import { ClientKafka } from "@nestjs/microservices";
 import { firstValueFrom } from "rxjs";
+import { kafkaConfig } from "../../config/kafka.config";
+import { UsersService } from "../users/users.service";
 
+// kafkaConfig().services.order.name
 @Injectable()
 export class OrderService implements OnModuleInit {
   constructor(
-    @Inject("MS-ORDERS")
+    @Inject("SERVICIO-ORDEN")
     private readonly clientOrders: ClientKafka,
-    @Inject("MS-USERS")
-    private readonly clientUsers: ClientKafka,
   ) {}
 
   async create(createOrderDto: CreateOrderDto) {
-    // const userFound = await firstValueFrom(
-    //   this.clientUsers.send("MS-USER-GET", createOrderDto.id_user),
-    // );
-    // if (!userFound) {
-    //   throw new NotFoundException(
-    //     `User not found with id ${createOrderDto.id_user}`,
-    //   );
-    // }
-
     const response = await firstValueFrom(
       this.clientOrders.send("MS-ORDER-POST", createOrderDto),
     );
     return response;
   }
 
-  findAll() {
-    return this.clientOrders.send("MS-ORDERS-GET", {});
+  findAll(page: number, limit: number) {
+    return this.clientOrders.send("MS-ORDERS-GET", { page, limit });
   }
 
   findOne(id: string) {
@@ -50,6 +37,13 @@ export class OrderService implements OnModuleInit {
     return response;
   }
 
+  async findUserOrders(idUser: String) {
+    const orders = await firstValueFrom(
+      this.clientOrders.send("ORDENES-USUARIO", idUser),
+    );
+    return orders;
+  }
+
   remove(id: string) {
     return `This action removes a #${id} order`;
   }
@@ -59,8 +53,7 @@ export class OrderService implements OnModuleInit {
     this.clientOrders.subscribeToResponseOf("MS-ORDER-POST");
     this.clientOrders.subscribeToResponseOf("MS-ORDER-GET");
     this.clientOrders.subscribeToResponseOf("MS-ORDER-PUT");
-    this.clientUsers.subscribeToResponseOf("MS-USER-GET");
+    this.clientOrders.subscribeToResponseOf("ORDENES-USUARIO");
     await this.clientOrders.connect();
-    await this.clientUsers.connect();
   }
 }
