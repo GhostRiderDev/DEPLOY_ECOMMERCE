@@ -27,7 +27,7 @@ jobs:
       - name: Build and Push
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: ./ecommerce-cos4h
           file: ./ecommerce-cos4h/Dockerfile.${{ matrix.service }}
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/henry-${{ matrix.service }}-ms:latest
