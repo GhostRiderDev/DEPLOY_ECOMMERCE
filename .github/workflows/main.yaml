@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        service: ["user", "order", "product", "file", "gateway:"]
+        service: ["user", "order", "product", "file", "gateway"]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
