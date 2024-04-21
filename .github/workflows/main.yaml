@@ -18,6 +18,8 @@ jobs:
           sudo apt update
           sudo apt upgrade
           sudo apt remove containerd
+          sudo apt update
+          sudo apt upgrade
           sudo apt install -y docker.io
 
       - name: Install Docker Compose
