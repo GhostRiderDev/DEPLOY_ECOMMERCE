@@ -3,7 +3,7 @@ name: deploy
 on:
   push:
     branches:
-      - "main"
+      - main
 
 jobs:
   build:
@@ -31,3 +31,74 @@ jobs:
           file: ./ecommerce-cos4h/Dockerfile.${{ matrix.service }}
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/henry-${{ matrix.service }}-ms:latest
+
+      - name: DigitalOcean App Platform deployment
+        uses: digitalocean/app_action@v1.1.5
+        with:
+          app_name: ecommerce-henry
+          token: ${{ secrets.DO_ACCESS_TOKEN }}
+          images: '[
+            {
+              "name": "zookeeper",
+              "image": {
+                "registry_type": "DOCKER_HUB",
+                "registry": "${{ secrets.DOCKERHUB_USERNAME }}",
+                "repository": "zookeeper",
+                "tag": "latest"
+              }
+            },
+            {
+              "name": "kafka",
+              "image": {
+                "registry_type": "DOCKER_HUB",
+                "registry": "${{ secrets.DOCKERHUB_USERNAME }}",
+                "repository": "kafka",
+                "tag": "latest"
+              }
+            },
+            {
+              "name": "henry-user-ms",
+              "image": {
+                "registry_type": "DOCKER_HUB",
+                "registry": "${{ secrets.DOCKERHUB_USERNAME }}",
+                "repository": "henry-user-ms",
+                "tag": "latest"
+              }
+            },
+            {
+              "name": "henry-order-ms",
+              "image": {
+                "registry_type": "DOCKER_HUB",
+                "registry": "${{ secrets.DOCKERHUB_USERNAME }}",
+                "repository": "henry-order-ms",
+                "tag": "latest"
+              }
+            },
+            {
+              "name": "henry-product-ms",
+              "image": {
+                "registry_type": "DOCKER_HUB",
+                "registry": "${{ secrets.DOCKERHUB_USERNAME }}",
+                "repository": "henry-product-ms",
+                "tag": "latest"
+              }
+            },
+            {
+              "name": "henry-file-ms",
+              "image": {
+                "registry_type": "DOCKER_HUB",
+                "registry": "${{ secrets.DOCKERHUB_USERNAME }}",
+                "repository": "henry-file-ms",
+                "tag": "latest"
+              }
+            },
+            {
+              "name": "henry-gateway-ms",
+              "image": {
+                "registry_type": "DOCKER_HUB",
+                "registry": "${{ secrets.DOCKERHUB_USERNAME }}",
+                "repository": "henry-gateway-ms",
+                "tag": "latest"
+              }
+            }
+          ]'
