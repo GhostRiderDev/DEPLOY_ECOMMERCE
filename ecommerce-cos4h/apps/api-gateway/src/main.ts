@@ -13,7 +13,7 @@ async function bootstrap() {
 
   app.use(morgan("dev"));
   app.use(cors());
-  app.use(auth(auth0Config));
+  // app.use(auth(auth0Config));
 
   const config = new DocumentBuilder()
     .setTitle("Ecommerce backend")
@@ -24,20 +24,6 @@ async function bootstrap() {
       type: "http",
       scheme: "bearer",
     })
-    .addOAuth2(
-      {
-        type: "oauth2",
-        flows: {
-          implicit: {
-            authorizationUrl: `http://localhost:7777/login`,
-            scopes: {
-              openid: "Open Id",
-            },
-          },
-        },
-      },
-      "Auth0",
-    )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

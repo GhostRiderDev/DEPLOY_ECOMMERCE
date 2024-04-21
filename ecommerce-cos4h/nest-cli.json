@@ -46,7 +46,7 @@
         "tsConfigPath": "apps/api-gateway/tsconfig.app.json",
         "plugins": [
           {
-            "name": "@nestjs/swagger/plugin",
+            "name": "@nestjs/swagger",
             "options": {
               "classValidatorShim": false,
               "introspectComments": true,

@@ -3,7 +3,7 @@ import { config as dotevConfig } from "dotenv";
 dotevConfig({ path: ".env" });
 
 export const kafkaConfig = () => ({
-  broker: process.env.KAFKA_BROKER ?? "localhost:9092",
+  broker: process.env.KAFKA_BROKER ?? "localhost:29092",
   services: {
     order: {
       clientId: "order",

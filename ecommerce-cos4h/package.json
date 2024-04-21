@@ -18,10 +18,12 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": " jest --config ./apps/api-gateway/test/jest-e2e.json",
-    "start:users": "nest start user-app --watch",
-    "start:gateway": "nest start api-gateway --watch",
-    "start:products": "nest start product-app --watch",
-    "start:auth": "nest start auth-app --watch"
+    "start:users": "nest start user-app",
+    "start:gateway": "nest start api-gateway",
+    "start:products": "nest start product-app",
+    "start:orders": "nest start order-app",
+    "start:files": "nest start file-app",
+    "start:all": "npm run start:users && npm run start:orders && npm run start:products && npm run start:gateway && npm run start:file"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
