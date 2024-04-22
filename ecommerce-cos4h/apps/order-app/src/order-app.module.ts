@@ -13,15 +13,16 @@ import { kafkaConfig } from "./config/kafka.config";
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      load: [dataSourceConfig],
-    }),
-    MongooseModule.forRootAsync({
-      inject: [ConfigService],
-      useFactory: async (configService: ConfigService) =>
-        configService.get("data-source"),
-    }),
+    MongooseModule.forRoot(dataSourceConfig().uriDeploy),
+    // ConfigModule.forRoot({
+    //   isGlobal: true,
+    //   load: [dataSourceConfig],
+    // }),
+    // MongooseModule.forRootAsync({
+    //   inject: [ConfigService],
+    //   useFactory: async (configService: ConfigService) =>
+    //     configService.get("data-source"),
+    // }),
     MongooseModule.forFeature([
       { name: Order.name, schema: OrderSchema },
       { name: OrderDetail.name, schema: OrderDetailSchema },

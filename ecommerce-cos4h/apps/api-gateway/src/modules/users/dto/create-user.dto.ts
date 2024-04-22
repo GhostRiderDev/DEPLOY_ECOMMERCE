@@ -33,7 +33,7 @@ export class CreateUserDto {
 
   /**
    * @description this address user
-   * @example 'CL 99B #98A-17'
+   * @example '+57-3045432345'
    * @since 1.0.0
    */
   @IsString()
