@@ -13,7 +13,7 @@ import {
 export class CreateUserDto {
   /**
    * @description this is user personal email
-   * @example 'maria@gmail.com'
+   * @example 'mariana@gmail.com'
    * @since 1.0.0
    */
   @IsEmail()
@@ -23,7 +23,7 @@ export class CreateUserDto {
 
   /**
    * @description this is username
-   * @example 'maria'
+   * @example 'mariana'
    * @since 1.0.0
    */
   @IsString()
@@ -33,7 +33,7 @@ export class CreateUserDto {
 
   /**
    * @description this address user
-   * @example '+57-3045432345'
+   * @example 'CL 98A-17B Chinita'
    * @since 1.0.0
    */
   @IsString()
@@ -42,7 +42,7 @@ export class CreateUserDto {
 
   /**
    * @description this is user  phone
-   * @example 'maria@gmail.com'
+   * @example '+57-3045432345'
    * @since 1.0.0
    */
   @IsPhoneNumber()
