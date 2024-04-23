@@ -151,7 +151,8 @@ export class UsersController {
   })
   @Put(":id")
   @HttpCode(201)
-  @UseGuards(AuthGuard)
+  @Roles(Role.SUPERADMIN)
+  @UseGuards(AuthGuard, RoleGuard)
   update(
     @Param("id", new ParseUUIDPipe()) id: string,
     @Body(new ValidationPipe()) updateUserDto: Partial<CreateUserDto>,
