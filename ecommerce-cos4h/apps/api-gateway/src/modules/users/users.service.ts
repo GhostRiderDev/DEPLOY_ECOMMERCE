@@ -36,6 +36,7 @@ export class UsersService implements OnModuleInit {
     const response: ResponseDto = await firstValueFrom(
       this.gatewayClientUsers.send("MS-USER-SIGNIN", userToLogin),
     );
+
     if (response.status !== 201) {
       throw new UnauthorizedException(response.data);
     }
@@ -73,7 +74,8 @@ export class UsersService implements OnModuleInit {
   }
 
   update(id: string, updateUserDto: Partial<CreateUserDto>) {
-    return this.gatewayClientUsers.emit("MS-USER-PUT", { id, updateUserDto });
+    this.gatewayClientUsers.emit("MS-USER-PUT", { id, user: updateUserDto });
+    return "Updated sucess";
   }
 
   remove(id: string) {

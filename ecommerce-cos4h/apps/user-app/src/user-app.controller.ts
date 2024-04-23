@@ -1,6 +1,6 @@
 import { Controller } from "@nestjs/common";
 import { UserAppService } from "./user-app.service";
-import { EventPattern, MessagePattern } from "@nestjs/microservices";
+import { EventPattern, MessagePattern, Payload } from "@nestjs/microservices";
 
 @Controller()
 export class UserAppController {
@@ -36,9 +36,8 @@ export class UserAppController {
   }
 
   @EventPattern("MS-USER-PUT")
-  async updateUser(data: { id: string; user }): Promise<any> {
-    const response = await this.userAppService.update(data.id, data.user);
-    return JSON.stringify(response);
+  async updateUser(@Payload() data: { id: string; user }): Promise<any> {
+    await this.userAppService.update(data.id, data.user);
   }
 
   @EventPattern("MS-USER-DELETE")

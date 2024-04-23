@@ -109,6 +109,7 @@ export class UserAppService implements OnModuleInit, OnModuleDestroy {
     if (!isPasswordValid) {
       return { status: 401, data: "Unauthorized" };
     }
+
     const userPayload = {
       id: userDB.id,
       email: userDB.email,
@@ -122,7 +123,7 @@ export class UserAppService implements OnModuleInit, OnModuleDestroy {
   }
 
   async update(id: string, user: UserEntity): Promise<UserEntity> {
-    await this.userRepository.update(id, user);
+    await this.userRepository.update(id, { ...user });
     return this.userRepository.findOneBy({ id });
   }
 

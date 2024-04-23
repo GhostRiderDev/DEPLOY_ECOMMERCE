@@ -29,8 +29,8 @@ export class UsersController {
 
   @Get()
   @HttpCode(200)
-  @UseGuards(AuthGuard, RoleGuard)
   @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard, RoleGuard)
   @ApiResponse({
     status: 200,
     schema: {
@@ -151,6 +151,7 @@ export class UsersController {
   })
   @Put(":id")
   @HttpCode(201)
+  @UseGuards(AuthGuard)
   update(
     @Param("id", new ParseUUIDPipe()) id: string,
     @Body(new ValidationPipe()) updateUserDto: Partial<CreateUserDto>,
@@ -175,7 +176,8 @@ export class UsersController {
   })
   @HttpCode(204)
   @Delete(":id")
-  @UseGuards(AuthGuard)
+  @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard, RoleGuard)
   remove(@Param("id", new ParseUUIDPipe()) id: string) {
     return this.usersService.remove(id);
   }
