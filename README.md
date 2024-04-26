@@ -3,7 +3,7 @@
 
 Este proyecto es el resultado de numerosas horas de trabajo y dedicación en Henry. Está desarrollado en NestJS y está diseñado para ofrecer una plataforma de compras de productos tecnológicos de alta calidad.
 
-<img src="ecomercer.drawio.png" />
+<img src="./ecommerce-cos4h/ecomercer.drawio.png" />
 
 ## Tecnologías Utilizadas
 
